@@ -1,7 +1,7 @@
 # MCP Client Library Implementation Plan
 
 ## Overview
-This document outlines the plan for implementing a Message Context Protocol (MCP) client library in C++. The library will be implemented using only the C++ standard library, with no external dependencies.
+This document outlines the plan for implementing a Model Context Protocol (MCP) client library in C++. The library will be implemented using only the C++ standard library, with no external dependencies.
 
 ## Project Goals
 - Create a robust, efficient MCP client library
@@ -22,7 +22,7 @@ mcpc-cpp/
 │   └── mcpc/
 │       ├── client.hpp           # Main client interface
 │       ├── connection.hpp       # Connection management
-│       ├── message.hpp          # Message definition and handling
+│       ├── model_context.hpp    # Model context definition and handling
 │       ├── serialization.hpp    # Serialization utilities
 │       ├── error.hpp            # Error handling
 │       ├── utils.hpp            # Utility functions
@@ -34,7 +34,7 @@ mcpc-cpp/
 │   └── async_client.cpp
 ├── tests/                       # Test cases
 │   ├── test_client.cpp
-│   ├── test_message.cpp
+│   ├── test_model_context.cpp
 │   └── test_serialization.cpp
 ├── docs/                        # Documentation
 │   └── api.md
@@ -66,10 +66,10 @@ public:
     bool is_connected() const;
     
     // Synchronous operations
-    Response send_message(const Message& message);
+    Response send_request(const ModelContext& context);
     
     // Asynchronous operations
-    std::future<Response> send_message_async(const Message& message);
+    std::future<Response> send_request_async(const ModelContext& context);
     
     // Event callbacks
     void set_on_connect(std::function<void()> callback);
@@ -82,13 +82,13 @@ public:
 };
 ```
 
-#### Message Class
-Represents an MCP message:
+#### ModelContext Class
+Represents an MCP model context:
 ```cpp
-class Message {
+class ModelContext {
 public:
-    Message();
-    explicit Message(const std::string& context);
+    ModelContext();
+    explicit ModelContext(const std::string& context);
     
     // Context management
     void set_context(const std::string& context);
@@ -105,7 +105,7 @@ public:
     
     // Serialization
     std::string serialize() const;
-    static Message deserialize(const std::string& data);
+    static ModelContext deserialize(const std::string& data);
 };
 ```
 
@@ -149,7 +149,7 @@ public:
 - Include context information in exceptions where relevant.
 
 #### Serialization
-- Implement a simple, efficient serialization format for MCP messages.
+- Implement a simple, efficient serialization format for MCP model contexts.
 - Support for different content types (text, binary).
 - Include versioning information for forward compatibility.
 
@@ -170,7 +170,7 @@ public:
 ### Phase 1: Core Infrastructure
 - Set up project structure
 - Implement basic socket wrapper
-- Create message class with serialization
+- Create model context class with serialization
 
 ### Phase 2: Client Implementation
 - Implement connection management
@@ -193,4 +193,4 @@ public:
 - Final testing and documentation updates
 
 ## Conclusion
-This plan outlines the approach for implementing a Message Context Protocol client library in C++ using only the standard library. The design focuses on creating a robust, user-friendly API while maintaining efficiency and reliability.
+This plan outlines the approach for implementing a Model Context Protocol client library in C++ using only the standard library. The design focuses on creating a robust, user-friendly API while maintaining efficiency and reliability.
